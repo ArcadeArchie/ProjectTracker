@@ -1,0 +1,35 @@
+<Application x:Class="ProjektTrackerV2.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProjektTrackerV2"
+             xmlns:matDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <CustomColorTheme BaseTheme="Light" PrimaryColor="#212121" SecondaryColor="#aa00ff"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/Generic.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml"/>
+        <ResourceDictionary>
+          <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Grey.xaml"/>
+          </ResourceDictionary.MergedDictionaries>
+          <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary600}"/>
+          <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary600Foreground}"/>
+          <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Primary900}"/>
+          <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary900Foreground}"/>
+          <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Primary100Foreground}"/>
+          <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary100}"/>
+        </ResourceDictionary>
+        <ResourceDictionary>
+          <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.DeepPurple.xaml"/>
+          </ResourceDictionary.MergedDictionaries>
+          <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Accent700}"/>
+          <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource Accent700Foreground}"/>
+        </ResourceDictionary>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

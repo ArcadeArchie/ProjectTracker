@@ -1,0 +1,151 @@
+<Window x:Class="ProjektTrackerV2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjektTrackerV2"
+        xmlns:cc="clr-namespace:ProjektTrackerV2.CustomControls"
+        xmlns:ext="clr-namespace:ProjektTrackerV2.Extentions"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:vm="clr-namespace:ProjektTrackerV2.ViewModels"
+        xmlns:m="clr-namespace:ProjektTrackerV2.Models"
+        Title="MainWindow" Height="450" Width="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+  <FrameworkElement.DataContext>
+    <vm:MainViewModel/>
+  </FrameworkElement.DataContext>
+  <TabControl Style="{StaticResource MaterialDesignTabControl}">
+    <TabItem Header="Time Table">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition MaxHeight="35"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" BorderBrush="Transparent" ItemsSource="{Binding Items}">
+          <ListView.View>
+            <GridView>
+              <GridViewColumn Header="{ext:DisplayName Member=ProjectName, Type={x:Type m:TrackingEntry}}"
+                              DisplayMemberBinding="{Binding ProjectName}"/>
+              <GridViewColumn Header="{ext:DisplayName Member=TimeStamp, Type={x:Type m:TrackingEntry}}"
+                              DisplayMemberBinding="{Binding TimeStamp, StringFormat=G, ConverterCulture=de}"/>
+              <GridViewColumn Header="{ext:NameOf Member=Duration, Type={x:Type m:TrackingEntry}}"
+                              DisplayMemberBinding="{Binding Duration}"/>
+              <GridViewColumn Header="{ext:DisplayName Member=BeenPaid, Type={x:Type m:TrackingEntry}}"
+                              DisplayMemberBinding="{Binding BeenPaid}"/>
+            </GridView>
+          </ListView.View>
+        </ListView>
+        <Grid Row="1">
+          <TextBox x:Name="TimerTextBox" IsReadOnly="True" HorizontalAlignment="Left" Width="500"
+                   IsHitTestVisible="False" BorderBrush="Transparent" Margin="5,0,5,0">
+            <FrameworkElement.Style>
+              <Style>
+                <Setter Property="TextBlock.FontSize" Value="20"/>
+              </Style>
+            </FrameworkElement.Style>
+          </TextBox>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBox x:Name="ProjectNameBox" Width="200" Margin="5,2.5,5,2.5">
+              <FrameworkElement.Style>
+                <Style>
+                  <Setter Property="TextBlock.FontSize" Value="20"/>
+                </Style>
+              </FrameworkElement.Style>
+            </TextBox>
+            <Button x:Name="StartTimerBtn" Width="65" Content="Start" HorizontalAlignment="Right" Margin="5,2.5,5,2.5"
+                    Command="{Binding TimerBtnCmd}"/>
+          </StackPanel>
+        </Grid>
+      </Grid>
+    </TabItem>
+    <TabItem Header="Settings">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="50*"/>
+          <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Column="0">
+          <GroupBox Header="General Settings">
+            <ListBox DisplayMemberPath="Description" SelectedValuePath="IsSelected" ItemsSource="{Binding SheetTypes}">
+              <FrameworkElement.Resources>
+                <Style TargetType="{x:Type ListBox}">
+                  <Setter Property="UIElement.SnapsToDevicePixels" Value="true"/>
+                  <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="true"/>
+                  <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                  <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                  <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+                  <Setter Property="FrameworkElement.MinWidth" Value="120"/>
+                  <Setter Property="FrameworkElement.MinHeight" Value="95"/>
+                  <Setter Property="Control.Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                CornerRadius="2">
+                          <ScrollViewer Margin="0" Focusable="false">
+                            <StackPanel Margin="2" IsItemsHost="True"/>
+                          </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                          <Trigger Property="UIElement.IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="Border.Background" Value="Transparent"/>
+                            <Setter TargetName="Border" Property="Border.BorderBrush" Value="Transparent"/>
+                          </Trigger>
+                          <Trigger Property="ItemsControl.IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                          </Trigger>
+                        </ControlTemplate.Triggers>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                  <Setter Property="ItemsControl.ItemContainerStyle">
+                    <Setter.Value>
+                      <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="FrameworkElement.Margin" Value="2"/>
+                        <Setter Property="Control.Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                              <Border Name="theBorder" Background="Transparent">
+                                <RadioButton Focusable="False" IsHitTestVisible="False" IsChecked="{TemplateBinding ListBoxItem.IsSelected}">
+                                  <ContentPresenter/>
+                                </RadioButton>
+                              </Border>
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
+                      </Style>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </FrameworkElement.Resources>
+            </ListBox>
+          </GroupBox>
+        </Grid>
+        <Grid Column="1">
+          <GroupBox Header="Google Settings">
+            <StackPanel Orientation="Vertical">
+              <FrameworkElement.Resources>
+                <Style TargetType="{x:Type TextBox}">
+                  <Setter Property="FrameworkElement.Margin" Value="5 5 5 5"/>
+                </Style>
+              </FrameworkElement.Resources>
+              <cc:LabelTextBox x:Name="SpreadSheetID" Label="Spreadsheet ID"/>
+              <cc:LabelTextBox x:Name="EditArea" Label="Edit area"/>
+              <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition/>
+                  <ColumnDefinition Width="2*"/>
+                  <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="SaveGoogleBtn" Grid.Column="0" Content="Save data" Command="{Binding SaveDataBtnCmd}"/>
+                <Button x:Name="LoadGoogleBtn" Grid.Column="2" Content="Load data" Command="{Binding LoadDataBtnCmd}"/>
+              </Grid>
+            </StackPanel>
+          </GroupBox>
+        </Grid>
+      </Grid>
+    </TabItem>
+  </TabControl>
+</Window>

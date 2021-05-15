@@ -1,0 +1,13 @@
+<UserControl x:Class="ProjektTrackerV2.CustomControls.LabelTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjektTrackerV2.CustomControls"
+             MinHeight="49" MaxHeight="49">
+  <Grid x:Name="Root">
+    <Label x:Name="TextBoxLabel" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top"
+           Content="{Binding Label}"/>
+    <TextBox x:Name="BaseTextBox" Height="23" Margin="0,26,0,0" VerticalAlignment="Top" Text="{Binding Text}"/>
+  </Grid>
+</UserControl>
