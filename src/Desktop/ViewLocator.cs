@@ -1,7 +1,7 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using ProjectTracker.ViewModels;
-using System;
 
 namespace ProjectTracker
 {
@@ -11,12 +11,12 @@ namespace ProjectTracker
 
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName.Replace("ViewModel", "View");
+            var name = data.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
             if (type != null)
             {
-                return (Control)Activator.CreateInstance(type);
+                return (Control)Activator.CreateInstance(type)!;
             }
             else
             {

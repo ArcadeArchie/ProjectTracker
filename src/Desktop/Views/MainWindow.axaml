@@ -1,9 +1,10 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:ProjectTracker.ViewModels;assembly=ProjectTracker"
+        xmlns:vm="using:ProjectTracker.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
+        MinWidth="450" MinHeight="550"
         x:Class="ProjectTracker.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="ProjectTracker">
@@ -12,27 +13,12 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<TabControl>
-		<TabItem Header="Time Table">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition MaxHeight="35"/>
-				</Grid.RowDefinitions>
-				<ListBox Grid.Row="0" BorderBrush="Transparent" Items="{Binding Items}">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-				<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-			</Grid>
-		</TabItem>
-		<TabItem Header="Settings"></TabItem>
-	</TabControl>
-
-
+  <TabControl>
+    <TabItem Header="Time Table">
+      <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </TabItem>
+    <TabItem Header="Settings">
+      
+    </TabItem>
+  </TabControl>
 </Window>
