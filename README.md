@@ -23,19 +23,21 @@ This Project is build using AvaloniaUI, .NET 5 and Xamarin.Forms, so for buildin
 [avaloniaui-quickstart]: https://docs.avaloniaui.net/docs/getting-started
 
 
-
 ## Folder structure
 ### src/Desktop
 Contains all Folders and Files for building and debugging the Desktop version of the Tracker
 
+-----
 ### src/Mobile
 Contains all Folders and Files for building and debugging the Mobile version of the Tracker
 
+-----
 ### Legacy
 
-Contains all Folders and Files for building and debugging the Older Desktop versions of the Tracker
-!May not work and will not be developed anymore!
+Contains all Folders and Files for building and debugging the Older Desktop versions of the Tracker 
+##### !May not work and will not be developed anymore!
 
+-----
 
 ## Resources
 Feature/Progress Tracking: [Trello](https://trello.com/b/DEfts4IE/project-tracker-mobile)
