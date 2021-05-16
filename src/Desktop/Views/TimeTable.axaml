@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+             xmlns:vm="using:ProjectTracker.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ProjectTracker.Views.TimeTable">
+  <Design.DataContext>
+    <vm:TimeTableViewModel/>
+  </Design.DataContext>
+  <Border BorderBrush="White" BorderThickness="0 0 0 0.5">
+    <Grid Margin="5">
+      <DataGrid Items="{Binding Items}">
+        <DataGrid.Styles>
+          <StyleInclude Source="avares://ProjectTracker/Styles/DataGrid.axaml"/>
+        </DataGrid.Styles>
+        <DataGrid.Columns>
+          <DataGridTextColumn Binding="{Binding ProjectName}"/>
+          <DataGridTextColumn Binding="{Binding TimeStamp}" />
+          <DataGridTextColumn Binding="{Binding Duration}" />
+          <DataGridTextColumn Binding="{Binding BeenPaid}" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+  </Border>
+</UserControl>
