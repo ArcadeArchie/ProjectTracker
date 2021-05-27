@@ -7,11 +7,15 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ProjectTracker.Views.TimeTable">
   <Design.DataContext>
-    <vm:TimeTableViewModel/>
+    <vm:TimeTableViewModel TimerText="Test Text"/>
   </Design.DataContext>
   <Border BorderBrush="White" BorderThickness="0 0 0 0.5">
     <Grid Margin="5">
-      <DataGrid Items="{Binding Items}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="100*"/>
+        <RowDefinition Height="35"/>
+      </Grid.RowDefinitions>
+      <DataGrid Grid.Row="0" Items="{Binding Items}">
         <DataGrid.Styles>
           <StyleInclude Source="avares://ProjectTracker/Styles/DataGrid.axaml"/>
         </DataGrid.Styles>
@@ -22,6 +26,11 @@
           <DataGridTextColumn Binding="{Binding BeenPaid}" />
         </DataGrid.Columns>
       </DataGrid>
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <TextBlock Text="{Binding TimerText}" TextAlignment="Center" Margin="5 10 25 5"/>
+        <Button Content="Start Timer" Margin="5 0 10 0" Command="{Binding StartTimerCmd}"/>
+        <Button Content="Restart Timer" Command="{Binding RestartTimerCmd}"/>
+      </StackPanel>
     </Grid>
   </Border>
 </UserControl>

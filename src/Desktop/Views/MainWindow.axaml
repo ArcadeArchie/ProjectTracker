@@ -17,12 +17,7 @@
   <TabControl>
     <TabItem Header="Time Table">
       <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="90*"/>
-          <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
         <controls:TimeTable Grid.Row="0"/>
-        <Grid Grid.Row="1"></Grid>
       </Grid>
     </TabItem>
     <TabItem Header="Settings">
