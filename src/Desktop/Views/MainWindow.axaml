@@ -17,7 +17,7 @@
   <TabControl>
     <TabItem Header="Time Table">
       <Grid>
-        <controls:TimeTable Grid.Row="0"/>
+        <controls:TimeTable Grid.Row="0" DataContext="{Binding TimeTableViewModel}"/>
       </Grid>
     </TabItem>
     <TabItem Header="Settings">

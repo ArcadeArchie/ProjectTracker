@@ -10,7 +10,6 @@ namespace ProjectTracker.Views
         public TimeTable()
         {
             InitializeComponent();
-            DataContext = new TimeTableViewModel();
         }
 
         private void InitializeComponent()

@@ -1,5 +1,10 @@
-﻿using ProjectTracker.Models;
+﻿using Avalonia.Controls;
+using Desktop.Data;
+using Desktop.Services;
+using Desktop.ViewModels.Interfaces;
+using ProjectTracker.Models;
 using ReactiveUI;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +17,21 @@ using System.Timers;
 
 namespace ProjectTracker.ViewModels
 {
-    public class TimeTableViewModel : ViewModelBase
+    public class TimeTableViewModel : ViewModelBase, ITimeTableViewModel
     {
+        private readonly TrackingEntryService _dataService;
         private readonly Timer _timer;
 
         #region Properties
+
+        #region ProjectName
+        private string _projectName;
+        public string ProjectName
+        {
+            get => _projectName;
+            set => this.RaiseAndSetIfChanged(ref _projectName, value);
+        }
+        #endregion
 
         #region StartBtnText
         private string _startBtnText;
@@ -26,7 +41,7 @@ namespace ProjectTracker.ViewModels
             set => this.RaiseAndSetIfChanged(ref _startBtnText, value);
         }
         #endregion
-        
+
         #region TimerText
         private string _timerText;
         public string TimerText
@@ -50,46 +65,96 @@ namespace ProjectTracker.ViewModels
         public ObservableCollection<TrackingEntry> Items { get; set; } = new ObservableCollection<TrackingEntry>();
 
         public ReactiveCommand<Unit, Unit> StartTimerCmd { get; }
-        public ReactiveCommand<Unit, Unit> RestartTimerCmd { get; }
 
+        public ReactiveCommand<System.Collections.IList, Unit> DeleteRowCmd { get; }
+        public ReactiveCommand<DataGrid, Unit> LoadRowsCmd { get; }
+        public ReactiveCommand<DataGrid, Unit> SaveRowsCmd { get; }
 
         #endregion
 
-
-        public TimeTableViewModel()
+        public TimeTableViewModel() { }
+        public TimeTableViewModel(IDataService<TrackingEntry> dataService)
         {
+            _dataService = (TrackingEntryService)dataService;
             StartBtnText = "Start Timer";
             _timer = new Timer(1000);
-            _timer.Elapsed += _timer_Elapsed;
+            _timer.Elapsed += timer_Elapsed;
             StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd);
-            RestartTimerCmd = ReactiveCommand.Create(HandleResetCmd, this.WhenAnyValue(x => x.IsRunning));
+            DeleteRowCmd = ReactiveCommand.Create<System.Collections.IList>(HandleDeleteRow);
         }
-        private int elapsedTime;
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        #region Methods
+
+        #region CommandActions
+
+        #region AddEntry
+        /// <summary>
+        /// 
+        /// </summary>
+        private void AddEntry()
         {
-            elapsedTime += 1;
-            TimerText = TimeSpan.FromSeconds(elapsedTime).ToString(@"hh\:mm\:ss");
+            var entry = new TrackingEntry
+            {
+                ProjectName = ProjectName,
+                BeenPaid = false,
+                TimeStamp = DateTimeOffset.Now,
+                Duration = TimeSpan.FromSeconds(elapsedTime)
+            };
+            Items.Add(entry);
         }
-        void HandleResetCmd()
-        {
-            TimerText = "00:00:00";
-            elapsedTime = 0;
-            HandleTimerCmd();
-        }
+        #endregion
+
+        #region HandleTimerCmd
+        /// <summary>
+        /// 
+        /// </summary>
         void HandleTimerCmd()
         {
             if (!_timer.Enabled)
             {
                 _timer.Start();
-                TimerText = "00:00:00";
                 StartBtnText = "Stop Timer";
             }
             else
             {
                 _timer.Stop();
                 StartBtnText = "Start Timer";
+                AddEntry();
             }
             IsRunning = _timer.Enabled;
         }
+        #endregion
+
+        #region HandleDeleteRow
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="grid"></param>
+        private void HandleDeleteRow(System.Collections.IList selectedItems)
+        {
+            var itemsToRemove = new List<TrackingEntry>();
+            foreach (TrackingEntry item in selectedItems)
+            {
+                itemsToRemove.Add(item);
+            }
+            foreach (var item in itemsToRemove)
+            {
+                Items.Remove(item);
+            }
+        }
+        #endregion
+
+        #endregion
+
+
+
+        private int elapsedTime;
+        private void timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            elapsedTime += 1;
+            TimerText = TimeSpan.FromSeconds(elapsedTime).ToString(@"hh\:mm\:ss");
+        }
+        #endregion
+
+
     }
 }

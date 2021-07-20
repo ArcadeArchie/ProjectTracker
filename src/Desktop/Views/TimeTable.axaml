@@ -3,19 +3,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+             xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"             
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:vm="using:ProjectTracker.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ProjectTracker.Views.TimeTable">
   <Design.DataContext>
-    <vm:TimeTableViewModel TimerText="Test Text"/>
+    <vm:TimeTableViewModel TimerText="00:00:00" StartBtnText="Start Timer"/>
   </Design.DataContext>
   <Border BorderBrush="White" BorderThickness="0 0 0 0.5">
     <Grid Margin="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="100*"/>
-        <RowDefinition Height="35"/>
+        <RowDefinition Height="100"/>
       </Grid.RowDefinitions>
-      <DataGrid Grid.Row="0" Items="{Binding Items}">
+      <DataGrid Name="TimeTableGrid" Grid.Row="0" Items="{Binding Items}">
+        <DataGrid.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Remove Selected Rows" Command="{Binding DeleteRowCmd}" CommandParameter="{Binding #TimeTableGrid.SelectedItems}"/>
+          </ContextMenu>
+        </DataGrid.ContextMenu>
         <DataGrid.Styles>
           <StyleInclude Source="avares://ProjectTracker/Styles/DataGrid.axaml"/>
         </DataGrid.Styles>
@@ -26,10 +33,26 @@
           <DataGridTextColumn Binding="{Binding BeenPaid}" />
         </DataGrid.Columns>
       </DataGrid>
-      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-        <TextBlock Text="{Binding TimerText}" TextAlignment="Center" Margin="5 10 25 5"/>
-        <Button Content="Start Timer" Margin="5 0 10 0" Command="{Binding StartTimerCmd}"/>
-        <Button Content="Restart Timer" Command="{Binding RestartTimerCmd}"/>
+      <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="40">
+        <TextBox Text="{Binding ProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" Watermark="Projectname" />
+      </Grid>
+      <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 0 5">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Height="32">
+          <TextBlock Text="{Binding TimerText}" TextAlignment="Center" Margin="5 10 25 5"/>
+          <Button Content="{Binding StartBtnText}" Margin="5 0 5 0" Command="{Binding StartTimerCmd}"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="5 0 0 0">
+          <Button Margin="0 0 0 5" Command="{Binding SaveRowsCmd}">
+            <Viewbox>
+              <avalonia:MaterialIcon Kind="ContentSaveOutline" />
+            </Viewbox>
+          </Button>
+          <Button Command="{Binding LoadRowsCmd}">
+            <Viewbox>
+              <avalonia:MaterialIcon Kind="FileRefreshOutline" />
+            </Viewbox>
+          </Button>
+        </StackPanel>
       </StackPanel>
     </Grid>
   </Border>

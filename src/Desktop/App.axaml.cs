@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Desktop;
 using ProjectTracker.ViewModels;
 using ProjectTracker.Views;
+using Splat;
 
 namespace ProjectTracker
 {
@@ -17,9 +19,10 @@ namespace ProjectTracker
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                DataContext = Locator.Current.GetRequiredService<MainWindowViewModel>();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = DataContext,
                 };
             }
 
