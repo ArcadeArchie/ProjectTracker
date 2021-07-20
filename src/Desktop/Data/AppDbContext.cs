@@ -8,7 +8,7 @@ namespace Desktop.Data
         public DbSet<TrackingEntry> TrackingEntries { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("appDb.db");
+            optionsBuilder.UseSqlite("Data Source=appDb.db");
             base.OnConfiguring(optionsBuilder);
         }
 
