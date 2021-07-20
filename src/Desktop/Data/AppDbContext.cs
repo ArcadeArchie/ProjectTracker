@@ -15,8 +15,6 @@ namespace Desktop.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<TrackingEntry>()
-            .HasKey(x => x.TimeStamp);
         }
     }
 }

@@ -9,6 +9,9 @@ namespace ProjectTracker.Models
 {
     public class TrackingEntry
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 

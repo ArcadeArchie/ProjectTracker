@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Desktop.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -14,18 +16,19 @@ namespace Desktop.Services
             _context = context; 
         }
 
-        public TrackingEntry Find()
+        public TrackingEntry Find(params object[] keys)
         {
-            throw new System.NotImplementedException();
+            return _context.TrackingEntries.Find(keys);
         }
 
-        public IEnumerable<TrackingEntry> LoadEntries()
+        public IEnumerable<TrackingEntry> LoadEntries(string projectname)
         {
-            throw new System.NotImplementedException();
+            return _context.TrackingEntries.Where(x => x.ProjectName == projectname);
         }
 
         public EntityEntry<TrackingEntry> SaveEntry(TrackingEntry entry)
         {
+            entry.Id = Guid.NewGuid();
             var dbEntry = _context.TrackingEntries.Add(entry);
             _context.SaveChanges();
             return dbEntry;

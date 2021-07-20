@@ -2,6 +2,7 @@
 using Desktop.Data;
 using Desktop.Services;
 using Desktop.ViewModels.Interfaces;
+using DynamicData;
 using ProjectTracker.Models;
 using ReactiveUI;
 using Splat;
@@ -67,8 +68,8 @@ namespace ProjectTracker.ViewModels
         public ReactiveCommand<Unit, Unit> StartTimerCmd { get; }
 
         public ReactiveCommand<System.Collections.IList, Unit> DeleteRowCmd { get; }
-        public ReactiveCommand<DataGrid, Unit> LoadRowsCmd { get; }
-        public ReactiveCommand<DataGrid, Unit> SaveRowsCmd { get; }
+        public ReactiveCommand<Unit, Unit> LoadRowsCmd { get; }
+        public ReactiveCommand<System.Collections.IList, Unit> SaveRowsCmd { get; }
 
         #endregion
 
@@ -79,8 +80,10 @@ namespace ProjectTracker.ViewModels
             StartBtnText = "Start Timer";
             _timer = new Timer(1000);
             _timer.Elapsed += timer_Elapsed;
-            StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd);
+            StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd, this.ObservableForProperty(x => x.ProjectName).Select(_ => !String.IsNullOrWhiteSpace(ProjectName)));
             DeleteRowCmd = ReactiveCommand.Create<System.Collections.IList>(HandleDeleteRow);
+            LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows, this.ObservableForProperty(x => x.ProjectName).Select(_ => !String.IsNullOrWhiteSpace(ProjectName)));
+            SaveRowsCmd = ReactiveCommand.Create<System.Collections.IList>(HandleSaveRows, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
         }
         #region Methods
 
@@ -141,6 +144,29 @@ namespace ProjectTracker.ViewModels
                 Items.Remove(item);
             }
         }
+        #endregion
+
+        #region HandleSaveRows
+
+        void HandleSaveRows(System.Collections.IList items)
+        {
+            foreach (TrackingEntry item in items)
+            {   
+                if(item.Id == Guid.Empty)
+                    _dataService.SaveEntry(item);
+            }
+        }
+
+        #endregion
+
+        #region HandleLoadRows
+
+        void HandleLoadRows()
+        {
+            Items.RemoveMany(Items.Where(x => x.Id != Guid.Empty));
+            Items.AddRange(_dataService.LoadEntries(ProjectName));
+        }
+
         #endregion
 
         #endregion

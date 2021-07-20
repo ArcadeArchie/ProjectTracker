@@ -7,8 +7,8 @@ namespace Desktop.Services
 {
     public interface IDataService<TEntity> where TEntity : class
     {
-        IEnumerable<TEntity> LoadEntries();
-        TEntity Find();
+        IEnumerable<TEntity> LoadEntries(string key);
+        TEntity Find(params object[] keys);
         EntityEntry<TEntity> SaveEntry(TEntity entry);
         ValueTask<EntityEntry<TEntity>> SaveEntryAsync(TEntity entry);
     }
