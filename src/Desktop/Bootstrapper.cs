@@ -7,6 +7,8 @@ using Desktop.ViewModels.Interfaces;
 using ProjectTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ProjectTracker.Util.Config;
+using Avalonia.Controls;
 
 namespace Desktop
 {
@@ -14,15 +16,18 @@ namespace Desktop
     {
         public static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
+            services.Register(() => new AppConfigService("ProjectTracker.Config"));
             services.AddDb(resolver);
             services.Register<IDataService<TrackingEntry>>(() => new TrackingEntryService(resolver.GetRequiredService<AppDbContext>()));
             services.Register<ITimeTableViewModel>(() => new TimeTableViewModel(resolver.GetRequiredService<IDataService<TrackingEntry>>()));
-            services.Register<MainWindowViewModel>(() => new MainWindowViewModel(resolver.GetRequiredService<ITimeTableViewModel>()));
+            services.Register(() => new MainWindowViewModel(resolver.GetRequiredService<ITimeTableViewModel>()));
         }
 
         private static void AddDb(this IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.Register<AppDbContext>(() => new AppDbContext());
+            services.Register(() => new AppDbContext());
+            if (Design.IsDesignMode)
+                return;
             var dbContext = resolver.GetRequiredService<AppDbContext>();
             if (dbContext.Database.GetPendingMigrations().Any())
             {

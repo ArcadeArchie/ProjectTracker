@@ -18,13 +18,13 @@ using System.Timers;
 
 namespace ProjectTracker.ViewModels
 {
-    public class TimeTableViewModel : ViewModelBase, ITimeTableViewModel
+    public class TimeTableViewModel : ListViewModelBase<TrackingEntry>, ITimeTableViewModel
     {
-        private readonly TrackingEntryService _dataService;
         private readonly Timer _timer;
 
         #region Properties
-
+        protected override TrackingEntryService _dataService { get; }
+        
         #region ProjectName
         private string _projectName;
         public string ProjectName
@@ -63,7 +63,7 @@ namespace ProjectTracker.ViewModels
 
         #endregion
 
-        public ObservableCollection<TrackingEntry> Items { get; set; } = new ObservableCollection<TrackingEntry>();
+        public override ObservableCollection<TrackingEntry> Items { get; set; } = new ObservableCollection<TrackingEntry>();
 
         public ReactiveCommand<Unit, Unit> StartTimerCmd { get; }
 
@@ -72,11 +72,13 @@ namespace ProjectTracker.ViewModels
         public ReactiveCommand<System.Collections.IList, Unit> SaveRowsCmd { get; }
 
         #endregion
-
-        public TimeTableViewModel() { }
-        public TimeTableViewModel(IDataService<TrackingEntry> dataService)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>Only there so the so the Designer works properly</remarks>
+        public TimeTableViewModel(): base(null) { }
+        public TimeTableViewModel(IDataService<TrackingEntry> dataService): base(dataService)
         {
-            _dataService = (TrackingEntryService)dataService;
             StartBtnText = "Start Timer";
             _timer = new Timer(1000);
             _timer.Elapsed += timer_Elapsed;
@@ -153,7 +155,7 @@ namespace ProjectTracker.ViewModels
             foreach (TrackingEntry item in items)
             {   
                 if(item.Id == Guid.Empty)
-                    _dataService.SaveEntry(item);
+                    _dataService?.SaveEntry(item);
             }
         }
 
@@ -163,6 +165,8 @@ namespace ProjectTracker.ViewModels
 
         void HandleLoadRows()
         {
+            if (_dataService == null)
+                return;
             Items.RemoveMany(Items.Where(x => x.Id != Guid.Empty));
             Items.AddRange(_dataService.LoadEntries(ProjectName));
         }
