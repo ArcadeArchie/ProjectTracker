@@ -1,14 +1,14 @@
 using Splat;
-using Desktop.Data;
-using Desktop.Services;
 using System;
-using ProjectTracker.ViewModels;
-using Desktop.ViewModels.Interfaces;
-using ProjectTracker.Models;
+using ProjectTracker.Desktop.ViewModels;
+using ProjectTracker.Desktop.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using ProjectTracker.Util.Config;
+using ProjectTracker.Desktop.Util.Config;
 using Avalonia.Controls;
+using ProjectTracker.Desktop.Services;
+using ProjectTracker.Desktop.Services.Interfaces;
+using ProjectTracker.Desktop.Data;
 
 namespace Desktop
 {
@@ -19,8 +19,12 @@ namespace Desktop
             services.Register(() => new AppConfigService("ProjectTracker.Config"));
             services.AddDb(resolver);
             services.Register<IDataService<TrackingEntry>>(() => new TrackingEntryService(resolver.GetRequiredService<AppDbContext>()));
-            services.Register<ITimeTableViewModel>(() => new TimeTableViewModel(resolver.GetRequiredService<IDataService<TrackingEntry>>()));
-            services.Register(() => new MainWindowViewModel(resolver.GetRequiredService<ITimeTableViewModel>()));
+            services.Register<IDataService<Project>>(() => new ProjectsService(resolver.GetRequiredService<AppDbContext>()));
+
+            services.Register(() => new TimeTableViewModel(resolver.GetRequiredService<IDataService<TrackingEntry>>()));
+            services.Register(() => new ProjectsTableViewModel(resolver.GetRequiredService<IDataService<Project>>()));
+
+            services.Register(() => new MainWindowViewModel(resolver.GetRequiredService<ProjectsTableViewModel>()));
         }
 
         private static void AddDb(this IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)

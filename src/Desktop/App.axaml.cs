@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Desktop;
-using ProjectTracker.ViewModels;
-using ProjectTracker.Views;
+using ProjectTracker.Desktop.ViewModels;
+using ProjectTracker.Desktop.Views;
 using Splat;
 
-namespace ProjectTracker
+namespace ProjectTracker.Desktop
 {
     public class App : Application
     {

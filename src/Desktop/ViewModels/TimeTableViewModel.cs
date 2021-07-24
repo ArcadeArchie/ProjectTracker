@@ -1,92 +1,96 @@
-﻿using Avalonia.Controls;
-using Desktop.Data;
-using Desktop.Services;
-using Desktop.ViewModels.Interfaces;
-using DynamicData;
-using ProjectTracker.Models;
+﻿using DynamicData;
+using ProjectTracker.Desktop.Models;
+using ProjectTracker.Desktop.Services;
+using ProjectTracker.Desktop.Services.Interfaces;
 using ReactiveUI;
-using Splat;
+using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
-namespace ProjectTracker.ViewModels
+namespace ProjectTracker.Desktop.ViewModels
 {
-    public class TimeTableViewModel : ListViewModelBase<TrackingEntry>, ITimeTableViewModel
+    public class TimeTableViewModel : ListViewModelBase<TrackingEntry>
     {
-        private readonly Timer _timer;
+        private readonly TimerService _timerService;
 
         #region Properties
-        protected override TrackingEntryService _dataService { get; }
-        
-        #region ProjectName
-        private string _projectName;
-        public string ProjectName
-        {
-            get => _projectName;
-            set => this.RaiseAndSetIfChanged(ref _projectName, value);
-        }
-        #endregion
+        /// <summary>
+        /// Current ProjectName
+        /// </summary>
+        [Reactive]
+        public string ProjectName { get; set; }
 
-        #region StartBtnText
-        private string _startBtnText;
-        public string StartBtnText
-        {
-            get => _startBtnText;
-            set => this.RaiseAndSetIfChanged(ref _startBtnText, value);
-        }
-        #endregion
+        /// <summary>
+        /// Displaytext for the start button
+        /// </summary>
+        [Reactive]
+        public string StartBtnText { get; set; }
 
-        #region TimerText
-        private string _timerText;
-        public string TimerText
-        {
-            get => _timerText;
-            set => this.RaiseAndSetIfChanged(ref _timerText, value);
-        }
-        #endregion
+        /// <summary>
+        /// Displaytext for the Timer
+        /// </summary>
+        [Reactive]
+        public string TimerText { get; set; }
 
-        #region IsRunning
+        /// <summary>
+        /// Is the Timmer running?
+        /// </summary>
+        [Reactive]
+        public bool IsRunning { get; set; }
 
-        private bool _isRunning;
-        public bool IsRunning
-        {
-            get => _isRunning;
-            set => this.RaiseAndSetIfChanged(ref _isRunning, value);
-        }
-
-        #endregion
-
+        /// <summary>
+        /// Current TrackingEntries
+        /// </summary>
         public override ObservableCollection<TrackingEntry> Items { get; set; } = new ObservableCollection<TrackingEntry>();
 
+        /// <summary>
+        /// Command for the StartTimer button
+        /// </summary>
         public ReactiveCommand<Unit, Unit> StartTimerCmd { get; }
 
+        /// <summary>
+        /// Command for the DeleteRows button
+        /// </summary>
         public ReactiveCommand<System.Collections.IList, Unit> DeleteRowCmd { get; }
+
+        /// <summary>
+        /// Command for the LoadRows button
+        /// </summary>
         public ReactiveCommand<Unit, Unit> LoadRowsCmd { get; }
+
+        /// <summary>
+        /// Command for the SaveRows button
+        /// </summary>
         public ReactiveCommand<System.Collections.IList, Unit> SaveRowsCmd { get; }
 
         #endregion
-        /// <summary>
-        /// 
-        /// </summary>
+
+        #region Constructors
+
+        /// <summary></summary>
         /// <remarks>Only there so the so the Designer works properly</remarks>
-        public TimeTableViewModel(): base(null) { }
-        public TimeTableViewModel(IDataService<TrackingEntry> dataService): base(dataService)
+        public TimeTableViewModel() { }
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="dataService"></param>
+        public TimeTableViewModel(IDataService<TrackingEntry> dataService) : base(dataService)
         {
             StartBtnText = "Start Timer";
-            _timer = new Timer(1000);
-            _timer.Elapsed += timer_Elapsed;
-            StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd, this.ObservableForProperty(x => x.ProjectName).Select(_ => !String.IsNullOrWhiteSpace(ProjectName)));
+            _timerService = new TimerService();
+            _timerService.TimerTick += timer_Elapsed;
+            StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd);
             DeleteRowCmd = ReactiveCommand.Create<System.Collections.IList>(HandleDeleteRow);
-            LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows, this.ObservableForProperty(x => x.ProjectName).Select(_ => !String.IsNullOrWhiteSpace(ProjectName)));
+            LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows);
             SaveRowsCmd = ReactiveCommand.Create<System.Collections.IList>(HandleSaveRows, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
         }
+        #endregion
+
         #region Methods
 
         #region CommandActions
@@ -114,18 +118,18 @@ namespace ProjectTracker.ViewModels
         /// </summary>
         void HandleTimerCmd()
         {
-            if (!_timer.Enabled)
+            if (!_timerService.Enabled)
             {
-                _timer.Start();
+                _timerService.Start();
                 StartBtnText = "Stop Timer";
             }
             else
             {
-                _timer.Stop();
+                _timerService.Stop();
                 StartBtnText = "Start Timer";
                 AddEntry();
             }
-            IsRunning = _timer.Enabled;
+            IsRunning = _timerService.Enabled;
         }
         #endregion
 
@@ -155,7 +159,7 @@ namespace ProjectTracker.ViewModels
             foreach (TrackingEntry item in items)
             {   
                 if(item.Id == Guid.Empty)
-                    _dataService?.SaveEntry(item);
+                    DataService?.SaveEntry(item);
             }
         }
 
@@ -165,10 +169,10 @@ namespace ProjectTracker.ViewModels
 
         void HandleLoadRows()
         {
-            if (_dataService == null)
+            if (DataService == null)
                 return;
             Items.RemoveMany(Items.Where(x => x.Id != Guid.Empty));
-            Items.AddRange(_dataService.LoadEntries(ProjectName));
+            Items.AddRange(DataService.LoadEntries(ProjectName));
         }
 
         #endregion
@@ -178,13 +182,12 @@ namespace ProjectTracker.ViewModels
 
 
         private int elapsedTime;
-        private void timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void timer_Elapsed(object? sender, EventArgs e)
         {
             elapsedTime += 1;
             TimerText = TimeSpan.FromSeconds(elapsedTime).ToString(@"hh\:mm\:ss");
         }
         #endregion
-
 
     }
 }

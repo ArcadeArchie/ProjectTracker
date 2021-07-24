@@ -1,12 +1,12 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:ProjectTracker.ViewModels"
-        xmlns:controls="using:ProjectTracker.Views"
+        xmlns:views="using:ProjectTracker.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
         MinWidth="650" MinHeight="550"
-        x:Class="ProjectTracker.Views.MainWindow"
+        x:Class="ProjectTracker.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="ProjectTracker">
 
@@ -15,9 +15,9 @@
     </Design.DataContext>
 
   <TabControl>
-    <TabItem Header="Time Table">
+    <TabItem Header="Projects">
       <Grid>
-        <controls:TimeTable Grid.Row="0" DataContext="{Binding TimeTableViewModel}"/>
+        <views:ProjectsTableView Grid.Row="0" DataContext="{Binding ProjectsTableViewModel}"/>
       </Grid>
     </TabItem>
     <TabItem Header="Settings">

@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using ProjectTracker.ViewModels;
+using ProjectTracker.Desktop.ViewModels;
 
-namespace ProjectTracker
+namespace ProjectTracker.Desktop
 {
     public class ViewLocator : IDataTemplate
     {

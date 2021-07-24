@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace ProjectTracker.Views
+namespace ProjectTracker.Desktop
 {
     public partial class MainWindow : Window
     {

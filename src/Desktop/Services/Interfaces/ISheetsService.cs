@@ -1,6 +1,9 @@
-namespace Desktop.Services
+namespace ProjectTracker.Desktop.Services.Interfaces
 {
     public interface ISheetsService
     {
+        void Export();
+        void LoadTrackingEntries();
+
     }
 }

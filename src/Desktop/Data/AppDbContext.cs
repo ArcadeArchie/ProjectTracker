@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectTracker.Models;
+using ProjectTracker.Desktop.Models;
 
-namespace Desktop.Data
+namespace ProjectTracker.Desktop.Data
 {
     public class AppDbContext : DbContext
     {

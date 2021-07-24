@@ -1,4 +1,4 @@
-﻿using Desktop.Services;
+﻿using ProjectTracker.Desktop.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectTracker.ViewModels
+namespace ProjectTracker.Desktop.ViewModels
 {
     public abstract class ListViewModelBase<TEntity> : ViewModelBase where TEntity : class
     {
-        protected virtual IDataService<TEntity> _dataService { get; }
+        protected virtual IDataService<TEntity> DataService { get; }
         public virtual ObservableCollection<TEntity> Items { get; set; }
 
+        protected ListViewModelBase() { }
         protected ListViewModelBase(IDataService<TEntity> dataService)
         {
-            _dataService = dataService;
+            DataService = dataService;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectTracker.Util.Config
+namespace ProjectTracker.Desktop.Util.Config
 {
     public class AppConfigService
     {

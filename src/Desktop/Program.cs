@@ -5,7 +5,7 @@ using Avalonia.ReactiveUI;
 using Desktop;
 using Splat;
 
-namespace ProjectTracker
+namespace ProjectTracker.Desktop
 {
     class Program
     {

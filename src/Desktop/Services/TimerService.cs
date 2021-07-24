@@ -1,16 +1,17 @@
 ﻿using Avalonia.Threading;
 using System;
+using ProjectTracker.Desktop.Services.Interfaces;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProjectTracker.Services
+namespace ProjectTracker.Desktop.Services
 {
     public class TimerService : ITimerService
     {
         public DispatcherTimer Timer { get; private set; }
 
         public event EventHandler TimerTick;
-
+        public bool Enabled { get => Timer.IsEnabled; }
         public TimerService()
         {
             Timer = new DispatcherTimer

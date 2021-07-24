@@ -1,7 +1,7 @@
 ﻿using Avalonia.Threading;
 using System;
 
-namespace ProjectTracker.Services
+namespace ProjectTracker.Desktop.Services.Interfaces
 {
     public interface ITimerService
     {

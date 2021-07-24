@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Desktop.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using ProjectTracker.Models;
+using ProjectTracker.Desktop.Data;
+using ProjectTracker.Desktop.Models;
+using ProjectTracker.Desktop.Services.Interfaces;
 
-namespace Desktop.Services
+namespace ProjectTracker.Desktop.Services
 {
     public class TrackingEntryService : IDataService<TrackingEntry>
     {

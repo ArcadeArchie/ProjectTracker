@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ProjectTracker.Data.Migrations
+namespace ProjectTracker.Desktop.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Desktop.ViewModels.Interfaces;
 
-namespace ProjectTracker.ViewModels
+namespace ProjectTracker.Desktop.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
-
-        public ITimeTableViewModel TimeTableViewModel { get; }
-
-        public MainWindowViewModel(ITimeTableViewModel timeTableViewModel)
+        public ProjectsTableViewModel ProjectsTableViewModel { get; }
+        public MainWindowViewModel()
         {
-            TimeTableViewModel = timeTableViewModel;
+
+        }
+        public MainWindowViewModel(ProjectsTableViewModel projectsTableViewModel)
+        {
+            ProjectsTableViewModel = projectsTableViewModel;
         }
     }
 }
