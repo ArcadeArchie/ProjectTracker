@@ -17,11 +17,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Goto Desktop src
-      run: cd ./src/Desktop/
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: src/Desktop
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      working-directory: src/Desktop
