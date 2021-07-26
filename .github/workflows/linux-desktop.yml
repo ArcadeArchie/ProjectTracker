@@ -20,8 +20,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-      
     - name: Restore dependencies
-      run: ls && dotnet restore
+      run: dotnet restore ./ProjectTracker.Desktop.sln
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore ./ProjectTracker.Desktop.sln
