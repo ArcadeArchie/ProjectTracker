@@ -1,8 +1,5 @@
 name: .NET
 
-defaults:
-  run:
-    working-directory: src/Desktop/
 
 on:
   push:
@@ -12,7 +9,9 @@ on:
 
 jobs:
   build:
-
+    defaults:
+      run:
+        working-directory: src/Desktop/
     runs-on: ubuntu-latest
 
     steps:
@@ -25,4 +24,3 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-      working-directory: src/Desktop
