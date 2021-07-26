@@ -8,6 +8,9 @@ namespace ProjectTracker.Desktop.Models
 {
     public class Project
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
+
+        public virtual IEnumerable<TrackingEntry> TrackingEntries { get; set; }
     }
 }

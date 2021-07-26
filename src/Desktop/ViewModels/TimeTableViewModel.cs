@@ -17,13 +17,14 @@ namespace ProjectTracker.Desktop.ViewModels
     public class TimeTableViewModel : ListViewModelBase<TrackingEntry>
     {
         private readonly TimerService _timerService;
-
         #region Properties
+
+        public Project CurrentProject { get; set; }
+
         /// <summary>
         /// Current ProjectName
         /// </summary>
-        [Reactive]
-        public string ProjectName { get; set; }
+        public string ProjectName => CurrentProject.Name;
 
         /// <summary>
         /// Displaytext for the start button
@@ -51,22 +52,22 @@ namespace ProjectTracker.Desktop.ViewModels
         /// <summary>
         /// Command for the StartTimer button
         /// </summary>
-        public ReactiveCommand<Unit, Unit> StartTimerCmd { get; }
+        public ReactiveCommand<Unit, Unit> StartTimerCmd { get; private set; }
 
         /// <summary>
         /// Command for the DeleteRows button
         /// </summary>
-        public ReactiveCommand<System.Collections.IList, Unit> DeleteRowCmd { get; }
+        public ReactiveCommand<System.Collections.IList, Unit> DeleteRowCmd { get; private set; }
 
         /// <summary>
         /// Command for the LoadRows button
         /// </summary>
-        public ReactiveCommand<Unit, Unit> LoadRowsCmd { get; }
+        public ReactiveCommand<Unit, Unit> LoadRowsCmd { get; private set; }
 
         /// <summary>
         /// Command for the SaveRows button
         /// </summary>
-        public ReactiveCommand<System.Collections.IList, Unit> SaveRowsCmd { get; }
+        public ReactiveCommand<System.Collections.IList, Unit> SaveRowsCmd { get; private set; }
 
         #endregion
 
@@ -84,14 +85,19 @@ namespace ProjectTracker.Desktop.ViewModels
             StartBtnText = "Start Timer";
             _timerService = new TimerService();
             _timerService.TimerTick += timer_Elapsed;
+            CreateCommands();
+        }
+        #endregion
+
+        #region Methods
+
+        void CreateCommands()
+        {
             StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd);
             DeleteRowCmd = ReactiveCommand.Create<System.Collections.IList>(HandleDeleteRow);
             LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows);
             SaveRowsCmd = ReactiveCommand.Create<System.Collections.IList>(HandleSaveRows, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
         }
-        #endregion
-
-        #region Methods
 
         #region CommandActions
 
@@ -103,7 +109,7 @@ namespace ProjectTracker.Desktop.ViewModels
         {
             var entry = new TrackingEntry
             {
-                ProjectName = ProjectName,
+                Project = CurrentProject,
                 BeenPaid = false,
                 TimeStamp = DateTimeOffset.Now,
                 Duration = TimeSpan.FromSeconds(elapsedTime)
@@ -172,7 +178,11 @@ namespace ProjectTracker.Desktop.ViewModels
             if (DataService == null)
                 return;
             Items.RemoveMany(Items.Where(x => x.Id != Guid.Empty));
-            Items.AddRange(DataService.LoadEntries(ProjectName));
+            var entries = DataService.LoadEntries(ProjectName);
+            if (entries.Any())
+            {
+                Items.AddRange(entries);
+            }
         }
 
         #endregion

@@ -6,6 +6,8 @@ namespace ProjectTracker.Desktop.Services.Interfaces
 {
     public interface IDataService<TEntity> where TEntity : class
     {
+        ValueTask<IEnumerable<TEntity>> LoadEntriesAsync();
+        IEnumerable<TEntity> LoadEntries();
         IEnumerable<TEntity> LoadEntries(string key);
         TEntity Find(params object[] keys);
         EntityEntry<TEntity> SaveEntry(TEntity entry);

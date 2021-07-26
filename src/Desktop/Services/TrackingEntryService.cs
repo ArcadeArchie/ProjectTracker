@@ -24,7 +24,22 @@ namespace ProjectTracker.Desktop.Services
 
         public IEnumerable<TrackingEntry> LoadEntries(string projectname)
         {
-            return _context.TrackingEntries.Where(x => x.ProjectName == projectname);
+            var entries = _context.TrackingEntries.Where(x => x.Project.Name == projectname);
+            if (entries.Any())
+            {
+                return entries;
+            }
+            return new List<TrackingEntry>();
+        }
+
+        public IEnumerable<TrackingEntry> LoadEntries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<IEnumerable<TrackingEntry>> LoadEntriesAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public EntityEntry<TrackingEntry> SaveEntry(TrackingEntry entry)

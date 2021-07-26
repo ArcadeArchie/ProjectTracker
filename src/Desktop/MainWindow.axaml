@@ -1,12 +1,13 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
         xmlns:vm="using:ProjectTracker.ViewModels"
-        xmlns:views="using:ProjectTracker.Views"
+        xmlns:views="using:ProjectTracker.Desktop.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
         MinWidth="650" MinHeight="550"
-        x:Class="ProjectTracker.MainWindow"
+        x:Class="ProjectTracker.Desktop.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="ProjectTracker">
 

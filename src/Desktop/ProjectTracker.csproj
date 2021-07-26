@@ -29,4 +29,9 @@
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody" Version="14.1.1" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="client_secret.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

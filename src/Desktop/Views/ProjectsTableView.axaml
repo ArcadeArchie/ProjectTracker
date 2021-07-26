@@ -5,9 +5,9 @@
              xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
              xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:vm="using:ProjectTracker.ViewModels"
+             xmlns:vm="using:ProjectTracker.Desktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ProjectTracker.Views.ProjectsTableView">
+             x:Class="ProjectTracker.Desktop.Views.ProjectsTableView">
   <Design.DataContext>
     <vm:ProjectsTableViewModel />
   </Design.DataContext>
@@ -17,10 +17,12 @@
         <RowDefinition Height="100*"/>
         <RowDefinition Height="100"/>
       </Grid.RowDefinitions>
-      <ListBox Grid.Row="0" Items="{Binding Items}">
-        <ListBox.ItemTemplate>
+      <ListBox SelectionMode="Single" Grid.Row="0" Items="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+        <ListBox.ItemTemplate> 
           <DataTemplate>
-            <TextBlock Text="{Binding Name}"/>
+            <Grid HorizontalAlignment="Stretch">
+              <TextBlock Text="{Binding Name}" />
+            </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
@@ -29,7 +31,7 @@
           <ColumnDefinition/>
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding NewProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" Watermark="new Projectname" />
+        <TextBox Text="{Binding NewProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" Watermark="New Projectname" />
         <Button Grid.Column="1" Command="{Binding CreateProjectCmd}" CommandParameter="{Binding #TimeTableGrid.Items}" Margin="5" Height="40">
           <Viewbox>
             <avalonia:MaterialIcon Kind="Plus" />

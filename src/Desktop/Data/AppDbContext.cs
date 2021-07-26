@@ -5,6 +5,7 @@ namespace ProjectTracker.Desktop.Data
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<Project> Projects { get; set; }
         public DbSet<TrackingEntry> TrackingEntries { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -14,6 +15,7 @@ namespace ProjectTracker.Desktop.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TrackingEntry>().HasOne(x => x.Project).WithMany(x => x.TrackingEntries);
             base.OnModelCreating(modelBuilder);
         }
     }

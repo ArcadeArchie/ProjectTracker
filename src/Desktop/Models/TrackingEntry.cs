@@ -13,7 +13,7 @@ namespace ProjectTracker.Desktop.Models
         public Guid Id { get; set; }
 
         [Display(Name = "Project name")]
-        public string ProjectName { get; set; }
+        public string ProjectName => Project.Name;
 
         [Display(Name = "Time")]
         public DateTimeOffset TimeStamp { get; set; }
@@ -23,5 +23,7 @@ namespace ProjectTracker.Desktop.Models
 
         [Display(Name = "Paid?")]
         public bool BeenPaid { get; set; }
+
+        public virtual Project Project { get; set; }
     }
 }

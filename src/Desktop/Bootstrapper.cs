@@ -29,7 +29,7 @@ namespace Desktop
 
         private static void AddDb(this IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
-            services.Register(() => new AppDbContext());
+            services.RegisterLazySingleton(() => new AppDbContext());
             if (Design.IsDesignMode)
                 return;
             var dbContext = resolver.GetRequiredService<AppDbContext>();

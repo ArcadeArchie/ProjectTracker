@@ -5,9 +5,9 @@
              xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
              xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"             
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:vm="using:ProjectTracker.ViewModels"
+             xmlns:vm="using:ProjectTracker.Desktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ProjectTracker.Views.TimeTable">
+             x:Class="ProjectTracker.Desktop.Views.TimeTable">
   <Design.DataContext>
     <vm:TimeTableViewModel TimerText="00:00:00" StartBtnText="Start Timer"/>
   </Design.DataContext>
@@ -33,9 +33,6 @@
           <DataGridTextColumn Binding="{Binding BeenPaid}" />
         </DataGrid.Columns>
       </DataGrid>
-      <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="40">
-        <TextBox Text="{Binding ProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" Watermark="Projectname" />
-      </Grid>
       <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 0 5">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Height="32">
           <TextBlock Text="{Binding TimerText}" TextAlignment="Center" Margin="5 10 25 5"/>
