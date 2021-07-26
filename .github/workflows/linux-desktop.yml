@@ -1,5 +1,9 @@
 name: .NET
 
+defaults:
+  run:
+    working-directory: src/Desktop/
+
 on:
   push:
     branches: [ master ]
@@ -19,7 +23,6 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/Desktop
     - name: Build
       run: dotnet build --no-restore
       working-directory: src/Desktop
