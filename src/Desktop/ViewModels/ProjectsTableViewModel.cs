@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProjectTracker.Desktop.ViewModels
@@ -32,31 +33,32 @@ namespace ProjectTracker.Desktop.ViewModels
 
         public ReactiveCommand<Unit, Unit> CreateProjectCmd { get; }
         public ReactiveCommand<Project, Unit> OpenProjectCmd { get; }
-
+        public ReactiveCommand<Project, Unit> DeleteProjectCmd { get; }
+        
         public override ObservableCollection<Project> Items { get; set; } = new ObservableCollection<Project>();
 
         public ProjectsTableViewModel() { }
 
         public ProjectsTableViewModel(IDataService<Project> dataService) : base(dataService)
         {
-            this.WhenValueChanged(x => x.SelectedItem).Subscribe(HandleSelectionChange);
             CreateProjectCmd = ReactiveCommand.Create(HandleCreateProject, this.ObservableForProperty(x => x.NewProjectName).Select(_ => !String.IsNullOrWhiteSpace(NewProjectName)));
             OpenProjectCmd = ReactiveCommand.Create<Project>(HandleOpenProject);
+            DeleteProjectCmd = ReactiveCommand.Create<Project>(HandleDeleteProject);
             LoadData().Subscribe((x) => { Items.Add(x); });
         }
 
         private void HandleOpenProject(Project project)
         {
-            var viewModel = Locator.Current.GetRequiredService<TimeTableViewModel>();
+            TimeTableViewModel viewModel = Locator.Current.GetRequiredService<TimeTableViewModel>();
             viewModel.CurrentProject = project;
-            var window = new MainWindow() 
+            Window window = new Window()
             {
                 Content = new TimeTable()
                 {
                     DataContext = viewModel
                 }
             };
-            window.ShowDialog((App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).MainWindow);
+            window.Show();
         }
 
         private IObservable<Project> LoadData()
@@ -71,18 +73,15 @@ namespace ProjectTracker.Desktop.ViewModels
             });
         }
 
-        private void HandleSelectionChange(Project? selectedProject)
-        {
-            if (selectedProject != null)
-            {
-                OpenProjectCmd.Execute(selectedProject).Subscribe();
-            }
-        }
-
         private void HandleCreateProject()
         {
             var newProject = DataService.SaveEntry(new Project { Name = NewProjectName });
             Items.Add(newProject.Entity);
+        }
+        private void HandleDeleteProject(Project project)
+        {
+            Items.Remove(project);
+            DataService.DeleteEntry(project);
         }
     }
 }

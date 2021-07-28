@@ -12,5 +12,7 @@ namespace ProjectTracker.Desktop.Services.Interfaces
         TEntity Find(params object[] keys);
         EntityEntry<TEntity> SaveEntry(TEntity entry);
         ValueTask<EntityEntry<TEntity>> SaveEntryAsync(TEntity entry);
+        void DeleteEntry(TEntity entry);
+        Task DeleteEntryAsync(TEntity entry);
     }
 }

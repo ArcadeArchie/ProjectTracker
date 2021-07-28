@@ -17,11 +17,23 @@
         <RowDefinition Height="100*"/>
         <RowDefinition Height="100"/>
       </Grid.RowDefinitions>
-      <ListBox SelectionMode="Single" Grid.Row="0" Items="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+      <ListBox x:Name="ProjectsList" SelectionMode="Single" Grid.Row="0" Items="{Binding Items}" SelectedItem="{Binding SelectedItem}">
         <ListBox.ItemTemplate> 
           <DataTemplate>
             <Grid HorizontalAlignment="Stretch">
-              <TextBlock Text="{Binding Name}" />
+              <TextBlock Text="{Binding Name}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+              <StackPanel Height="40" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="5" 
+                        Command="{Binding OpenProjectCmd, ElementName=ProjectsList, Path=DataContext.OpenProjectCmd}"
+                        CommandParameter="{Binding}" Content="Open"/>
+                <Button Margin="5" 
+                        Command="{Binding DeleteProjectCmd, ElementName=ProjectsList, Path=DataContext.DeleteProjectCmd}" 
+                        CommandParameter="{Binding}">
+                  <Viewbox>
+                    <avalonia:MaterialIcon Kind="Minus" />
+                  </Viewbox>
+                </Button>
+              </StackPanel>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

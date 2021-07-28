@@ -50,5 +50,19 @@ namespace ProjectTracker.Desktop.Services
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteEntry(Project entry)
+        {
+            var dbEntry = _context.Projects.Find(entry.Id);
+            _context.Projects.Remove(dbEntry);
+            _context.SaveChanges();
+        }
+
+        public async Task DeleteEntryAsync(Project entry)
+        {
+            var dbEntry = await _context.Projects.FindAsync(entry.Id);
+            _context.Projects.Remove(dbEntry);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -128,6 +128,7 @@ namespace ProjectTracker.Desktop.ViewModels
             {
                 _timerService.Start();
                 StartBtnText = "Stop Timer";
+                elapsedTime = 0;
             }
             else
             {

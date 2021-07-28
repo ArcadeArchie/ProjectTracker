@@ -17,6 +17,16 @@ namespace ProjectTracker.Desktop.Services
             _context = context; 
         }
 
+        public void DeleteEntry(TrackingEntry entry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteEntryAsync(TrackingEntry entry)
+        {
+            throw new NotImplementedException();
+        }
+
         public TrackingEntry Find(params object[] keys)
         {
             return _context.TrackingEntries.Find(keys);
