@@ -17,14 +17,16 @@ namespace Desktop
         public static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
         {
             services.Register(() => new AppConfigService("ProjectTracker.Config"));
+            services.AddGooogle(resolver);
             services.AddDb(resolver);
             services.Register<IDataService<TrackingEntry>>(() => new TrackingEntryService(resolver.GetRequiredService<AppDbContext>()));
             services.Register<IDataService<Project>>(() => new ProjectsService(resolver.GetRequiredService<AppDbContext>()));
 
-            services.Register(() => new TimeTableViewModel(resolver.GetRequiredService<IDataService<TrackingEntry>>()));
+            services.Register(() => new TimeTableViewModel(resolver.GetRequiredService<IDataService<TrackingEntry>>(), resolver.GetRequiredService<ISheetsService>()));
             services.Register(() => new ProjectsTableViewModel(resolver.GetRequiredService<IDataService<Project>>()));
+            services.Register(() => new SettingsTabViewModel(resolver.GetRequiredService<AppConfigService>()));
 
-            services.Register(() => new MainWindowViewModel(resolver.GetRequiredService<ProjectsTableViewModel>()));
+            services.Register(() => new MainWindowViewModel(resolver.GetRequiredService<ProjectsTableViewModel>(), resolver.GetRequiredService<SettingsTabViewModel>()));
         }
 
         private static void AddDb(this IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
@@ -36,6 +38,19 @@ namespace Desktop
             if (dbContext.Database.GetPendingMigrations().Any())
             {
                 dbContext.Database.Migrate();
+            }
+        }
+
+        private static async void AddGooogle(this IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+        {
+            var config = resolver.GetRequiredService<AppConfigService>();
+            if (await config.GetAsync<bool>("google_enabled"))
+            {
+                var service = new GoogleSheetsService();
+
+                if (!Design.IsDesignMode)
+                    await service.Init();
+                services.Register<ISheetsService>(() => service);
             }
         }
 

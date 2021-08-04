@@ -16,7 +16,9 @@ namespace ProjectTracker.Desktop.ViewModels
 {
     public class TimeTableViewModel : ListViewModelBase<TrackingEntry>
     {
+        private readonly ISheetsService _sheetsService;
         private readonly TimerService _timerService;
+        private IEnumerable<TrackingEntry> _googleData;
         #region Properties
 
         public Project CurrentProject { get; set; }
@@ -63,6 +65,10 @@ namespace ProjectTracker.Desktop.ViewModels
         /// Command for the LoadRows button
         /// </summary>
         public ReactiveCommand<Unit, Unit> LoadRowsCmd { get; private set; }
+        /// <summary>
+        /// Command for the LoadRows button
+        /// </summary>
+        public ReactiveCommand<Unit, Unit> SyncRowsToGoogleCmd { get; private set; }
 
         /// <summary>
         /// Command for the SaveRows button
@@ -80,11 +86,12 @@ namespace ProjectTracker.Desktop.ViewModels
         /// Default Constructor
         /// </summary>
         /// <param name="dataService"></param>
-        public TimeTableViewModel(IDataService<TrackingEntry> dataService) : base(dataService)
+        public TimeTableViewModel(IDataService<TrackingEntry> dataService, ISheetsService sheetsService) : base(dataService)
         {
             StartBtnText = "Start Timer";
             _timerService = new TimerService();
             _timerService.TimerTick += timer_Elapsed;
+            _sheetsService = sheetsService;
             CreateCommands();
         }
         #endregion
@@ -96,6 +103,7 @@ namespace ProjectTracker.Desktop.ViewModels
             StartTimerCmd = ReactiveCommand.Create(HandleTimerCmd);
             DeleteRowCmd = ReactiveCommand.Create<System.Collections.IList>(HandleDeleteRow);
             LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows);
+            SyncRowsToGoogleCmd = ReactiveCommand.Create(HandleSyncRowsToGoogle, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
             SaveRowsCmd = ReactiveCommand.Create<System.Collections.IList>(HandleSaveRows, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
         }
 
@@ -164,8 +172,8 @@ namespace ProjectTracker.Desktop.ViewModels
         void HandleSaveRows(System.Collections.IList items)
         {
             foreach (TrackingEntry item in items)
-            {   
-                if(item.Id == Guid.Empty)
+            {
+                if (item.Id == Guid.Empty)
                     DataService?.SaveEntry(item);
             }
         }
@@ -186,6 +194,46 @@ namespace ProjectTracker.Desktop.ViewModels
             }
         }
 
+        #endregion
+
+        #region HandleSyncRowsToGoogle
+        private void HandleSyncRowsToGoogle()
+        {
+            var googleData = _sheetsService.LoadTrackingEntries();
+            if (!googleData.Any())
+            {
+                List<IList<object>> saves = new List<IList<object>>();
+                foreach (TrackingEntry trackingEntry in Items.Where(x => x.Id != Guid.Empty))
+                    saves.Add(new List<object>()
+                    {
+                        trackingEntry.ProjectName,
+                        trackingEntry.TimeStamp,
+                        trackingEntry.Duration,
+                        false,
+                        trackingEntry.Id
+                    });
+                _sheetsService.Export(saves);
+            }
+            else
+            {
+                var googleIds = googleData.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
+
+                List<IList<object>> saves = new List<IList<object>>();
+                foreach (TrackingEntry trackingEntry in Items.Where(x => !googleIds.Contains(x.Id)))
+                {
+                    saves.Add(new List<object>()
+                    {
+                        trackingEntry.ProjectName,
+                        trackingEntry.TimeStamp,
+                        trackingEntry.Duration,
+                        trackingEntry.BeenPaid,
+                        trackingEntry.Id
+                    });
+                }
+                _sheetsService.Export(saves, googleData.Count());
+            }
+
+        }
         #endregion
 
         #endregion

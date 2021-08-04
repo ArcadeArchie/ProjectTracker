@@ -21,7 +21,8 @@
         <DataGrid.ContextMenu>
           <ContextMenu>
             <MenuItem Header="Remove Selected Rows" Command="{Binding DeleteRowCmd}" CommandParameter="{Binding #TimeTableGrid.SelectedItems}"/>
-          </ContextMenu>
+            <MenuItem Header="Sync Rows with Google" Command="{Binding SyncRowsToGoogleCmd}"/>  
+        </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Styles>
           <StyleInclude Source="avares://ProjectTracker/Styles/DataGrid.axaml"/>

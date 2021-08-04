@@ -22,7 +22,7 @@
       </Grid>
     </TabItem>
     <TabItem Header="Settings">
-      
+      <views:SettingsTabView DataContext="{Binding SettingsTabViewModel}"/>
     </TabItem>
   </TabControl>
 </Window>

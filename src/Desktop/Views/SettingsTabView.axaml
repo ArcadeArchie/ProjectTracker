@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
+             xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="using:ProjectTracker.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ProjectTracker.Desktop.Views.SettingsTabView">
+  <Design.DataContext>
+    <vm:SettingsTabViewModel />
+  </Design.DataContext>
+  <Grid Margin="5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="100*"/>
+      <RowDefinition Height="40"/>
+    </Grid.RowDefinitions>
+    <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
+      <Border BorderThickness=".5" BorderBrush="White">
+        <CheckBox IsChecked="{Binding IsGoogleEnabled}" Margin="5" Content="Enable Google-Sync"/>
+      </Border>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Grid.Row="1">
+      <Button Content="Save Changes" Command="{Binding SaveChangesCmd}"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

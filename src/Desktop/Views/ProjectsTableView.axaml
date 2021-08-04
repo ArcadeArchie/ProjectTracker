@@ -18,16 +18,16 @@
         <RowDefinition Height="100"/>
       </Grid.RowDefinitions>
       <ListBox x:Name="ProjectsList" SelectionMode="Single" Grid.Row="0" Items="{Binding Items}" SelectedItem="{Binding SelectedItem}">
-        <ListBox.ItemTemplate> 
+        <ListBox.ItemTemplate>
           <DataTemplate>
             <Grid HorizontalAlignment="Stretch">
               <TextBlock Text="{Binding Name}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
               <StackPanel Height="40" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Margin="5" 
+                <Button Margin="5"
                         Command="{Binding OpenProjectCmd, ElementName=ProjectsList, Path=DataContext.OpenProjectCmd}"
                         CommandParameter="{Binding}" Content="Open"/>
-                <Button Margin="5" 
-                        Command="{Binding DeleteProjectCmd, ElementName=ProjectsList, Path=DataContext.DeleteProjectCmd}" 
+                <Button Margin="5"
+                        Command="{Binding DeleteProjectCmd, ElementName=ProjectsList, Path=DataContext.DeleteProjectCmd}"
                         CommandParameter="{Binding}">
                   <Viewbox>
                     <avalonia:MaterialIcon Kind="Minus" />
@@ -43,7 +43,7 @@
           <ColumnDefinition/>
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding NewProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" Watermark="New Projectname" />
+        <TextBox Text="{Binding NewProjectName}" Classes="Filled Dense" UseFloatingWatermark="False" Height="40" MinWidth="160" Watermark="New Projectname" />
         <Button Grid.Column="1" Command="{Binding CreateProjectCmd}" CommandParameter="{Binding #TimeTableGrid.Items}" Margin="5" Height="40">
           <Viewbox>
             <avalonia:MaterialIcon Kind="Plus" />
