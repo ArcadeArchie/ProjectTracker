@@ -1,4 +1,4 @@
-﻿using ProjectTracker.Desktop.Util.Config;
+﻿using ProjectTracker.Config;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
@@ -8,7 +8,7 @@ namespace ProjectTracker.Desktop.ViewModels
 {
     public class SettingsTabViewModel : ViewModelBase
     {
-        private readonly AppConfigService _appConfig;
+        private readonly AppConfig _appConfig;
         [Reactive]
         public bool IsGoogleEnabled { get; set; }
 
@@ -18,23 +18,23 @@ namespace ProjectTracker.Desktop.ViewModels
         {
 
         }
-        public SettingsTabViewModel(AppConfigService appConfig)
+        public SettingsTabViewModel(AppConfig appConfig)
         {
             _appConfig = appConfig;
             Init();
             SaveChangesCmd = ReactiveCommand.CreateFromTask(HandleSaveChangesAsync);
         }
 
-        private async void Init()
+        private void Init()
         {
-            IsGoogleEnabled = await _appConfig.GetAsync<bool>("google_enabled");
+            IsGoogleEnabled = _appConfig.GoogleEnabled;
         }
 
         private async Task HandleSaveChangesAsync()
         {
-            if (IsGoogleEnabled != await _appConfig.GetAsync<bool>("google_enabled"))
+            if (IsGoogleEnabled != _appConfig.GoogleEnabled)
             {
-                await _appConfig.SetAsync<bool>("google_enabled", IsGoogleEnabled);
+                _appConfig.GoogleEnabled = IsGoogleEnabled;
             }
         }
     }
