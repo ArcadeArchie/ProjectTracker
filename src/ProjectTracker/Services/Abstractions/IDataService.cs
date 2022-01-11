@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace ProjectTracker.Desktop.Services.Interfaces
+namespace ProjectTracker.Services.Abstractions
 {
     public interface IDataService<TEntity> where TEntity : class
     {

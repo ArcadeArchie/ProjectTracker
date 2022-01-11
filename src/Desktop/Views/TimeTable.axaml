@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ProjectTracker.Desktop.Views.TimeTable">
   <Design.DataContext>
-    <vm:TimeTableViewModel TimerText="00:00:00" StartBtnText="Start Timer"/>
+    <vm:TimeTableViewModel TimerText="00:00:00" StartBtnText="Start Timer" HourTotal="Total hours: 19,30"/>
   </Design.DataContext>
   <Border BorderBrush="White" BorderThickness="0 0 0 0.5">
     <Grid Margin="5">
@@ -20,8 +20,10 @@
       <DataGrid Name="TimeTableGrid" Grid.Row="0" Items="{Binding Items}">
         <DataGrid.ContextMenu>
           <ContextMenu>
-            <MenuItem Header="Remove Selected Rows" Command="{Binding DeleteRowCmd}" CommandParameter="{Binding #TimeTableGrid.SelectedItems}"/>
-            <MenuItem Header="Sync Rows with Google" Command="{Binding SyncRowsToGoogleCmd}"/>  
+            <MenuItem Header="Remove Selected Rows" 
+                      Command="{Binding DeleteRowCmd}" CommandParameter="{Binding #TimeTableGrid.SelectedItems}"/>
+            <MenuItem Header="Sync Rows with Google" 
+                      Command="{Binding SyncRowsToGoogleCmd}"/>  
         </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Styles>
@@ -34,8 +36,11 @@
           <DataGridTextColumn Binding="{Binding BeenPaid}" />
         </DataGrid.Columns>
       </DataGrid>
-      <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 0 5">
+      <StackPanel Grid.Row="1" Orientation="Horizontal" 
+                  VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                  Margin="0 0 0 5">        
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Height="32">
+          <TextBlock Text="{Binding HourTotal}" TextAlignment="Center" Margin="5 10 25 5"/>
           <TextBlock Text="{Binding TimerText}" TextAlignment="Center" Margin="5 10 25 5"/>
           <Button Content="{Binding StartBtnText}" Margin="5 0 5 0" Command="{Binding StartTimerCmd}"/>
         </StackPanel>

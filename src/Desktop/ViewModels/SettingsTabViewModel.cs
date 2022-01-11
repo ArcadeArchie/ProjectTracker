@@ -1,14 +1,7 @@
-﻿using Avalonia.FreeDesktop.DBusIme;
-using DynamicData.Binding;
-using ProjectTracker.Desktop.Util.Config;
+﻿using ProjectTracker.Desktop.Util.Config;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectTracker.Desktop.ViewModels

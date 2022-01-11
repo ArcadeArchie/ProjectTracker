@@ -1,7 +1,7 @@
-using ProjectTracker.Desktop.Models;
+using ProjectTracker.Models;
 using System.Collections.Generic;
 
-namespace ProjectTracker.Desktop.Services.Interfaces
+namespace ProjectTracker.Services.Abstractions
 {
     public interface ISheetsService
     {

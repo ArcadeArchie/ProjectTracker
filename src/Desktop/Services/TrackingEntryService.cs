@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ProjectTracker.Desktop.Data;
-using ProjectTracker.Desktop.Models;
-using ProjectTracker.Desktop.Services.Interfaces;
+using ProjectTracker.Models;
+using ProjectTracker.Services.Abstractions;
 
 namespace ProjectTracker.Desktop.Services
 {

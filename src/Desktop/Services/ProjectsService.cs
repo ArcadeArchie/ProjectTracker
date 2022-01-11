@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using ProjectTracker.Desktop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ProjectTracker.Desktop.Services.Interfaces;
 using ProjectTracker.Desktop.Data;
 using Microsoft.EntityFrameworkCore;
+using ProjectTracker.Services.Abstractions;
+using ProjectTracker.Models;
 
 namespace ProjectTracker.Desktop.Services
 {

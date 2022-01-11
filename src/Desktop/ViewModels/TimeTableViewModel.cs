@@ -1,7 +1,7 @@
 ﻿using DynamicData;
-using ProjectTracker.Desktop.Models;
 using ProjectTracker.Desktop.Services;
-using ProjectTracker.Desktop.Services.Interfaces;
+using ProjectTracker.Models;
+using ProjectTracker.Services.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Timers;
 
 namespace ProjectTracker.Desktop.ViewModels
 {
@@ -18,7 +17,6 @@ namespace ProjectTracker.Desktop.ViewModels
     {
         private readonly ISheetsService _sheetsService;
         private readonly TimerService _timerService;
-        private IEnumerable<TrackingEntry> _googleData;
         #region Properties
 
         public Project CurrentProject { get; set; }
@@ -39,6 +37,9 @@ namespace ProjectTracker.Desktop.ViewModels
         /// </summary>
         [Reactive]
         public string TimerText { get; set; }
+
+        [Reactive]
+        public string HourTotal { get; set; }
 
         /// <summary>
         /// Is the Timmer running?
@@ -90,7 +91,7 @@ namespace ProjectTracker.Desktop.ViewModels
         {
             StartBtnText = "Start Timer";
             _timerService = new TimerService();
-            _timerService.TimerTick += timer_Elapsed;
+            _timerService.TimerTick += Timer_Elapsed;
             _sheetsService = sheetsService;
             CreateCommands();
         }
@@ -105,6 +106,11 @@ namespace ProjectTracker.Desktop.ViewModels
             LoadRowsCmd = ReactiveCommand.Create(HandleLoadRows);
             SyncRowsToGoogleCmd = ReactiveCommand.Create(HandleSyncRowsToGoogle, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
             SaveRowsCmd = ReactiveCommand.Create<System.Collections.IList>(HandleSaveRows, this.ObservableForProperty(x => x.Items.Count).Select(_ => Items.Any()));
+            Items.CollectionChanged += (o,e) => 
+            { 
+                var durationSum = Items.Where(x => !x.BeenPaid).Select(x => x.Duration).Aggregate(TimeSpan.Zero, (t1, t2) => t1 + t2); 
+                HourTotal = durationSum.ToString(@"hh\,mm");
+            };
         }
 
         #region CommandActions
@@ -202,8 +208,8 @@ namespace ProjectTracker.Desktop.ViewModels
             var googleData = _sheetsService.LoadTrackingEntries();
             if (!googleData.Any())
             {
-                List<IList<object>> saves = new List<IList<object>>();
-                foreach (TrackingEntry trackingEntry in Items.Where(x => x.Id != Guid.Empty))
+                List<IList<object>> saves = new();
+                foreach (TrackingEntry trackingEntry in Items.Where(x => x.Id != Guid.Empty).OrderBy(x => x.TimeStamp))
                     saves.Add(new List<object>()
                     {
                         trackingEntry.ProjectName,
@@ -218,8 +224,8 @@ namespace ProjectTracker.Desktop.ViewModels
             {
                 var googleIds = googleData.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
 
-                List<IList<object>> saves = new List<IList<object>>();
-                foreach (TrackingEntry trackingEntry in Items.Where(x => !googleIds.Contains(x.Id)))
+                List<IList<object>> saves = new();
+                foreach (TrackingEntry trackingEntry in Items.Where(x => !googleIds.Contains(x.Id)).OrderBy(x => x.TimeStamp))
                 {
                     saves.Add(new List<object>()
                     {
@@ -230,7 +236,7 @@ namespace ProjectTracker.Desktop.ViewModels
                         trackingEntry.Id
                     });
                 }
-                _sheetsService.Export(saves, googleData.Count());
+                _sheetsService.Export(saves, googleData.Where(x => x.Id != Guid.Empty).Count());
             }
 
         }
@@ -241,7 +247,7 @@ namespace ProjectTracker.Desktop.ViewModels
 
 
         private int elapsedTime;
-        private void timer_Elapsed(object? sender, EventArgs e)
+        private void Timer_Elapsed(object? sender, EventArgs e)
         {
             elapsedTime += 1;
             TimerText = TimeSpan.FromSeconds(elapsedTime).ToString(@"hh\:mm\:ss");

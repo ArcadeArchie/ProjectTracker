@@ -1,11 +1,11 @@
-﻿using Avalonia.Threading;
-using System;
+﻿using System;
+using System.Timers;
 
-namespace ProjectTracker.Desktop.Services.Interfaces
+namespace ProjectTracker.Services.Abstractions
 {
     public interface ITimerService
     {
-        DispatcherTimer Timer { get; }
+        Timer Timer { get; }
 
         event EventHandler TimerTick;
 

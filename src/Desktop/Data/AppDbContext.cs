@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectTracker.Desktop.Models;
+using ProjectTracker.Models;
 
 namespace ProjectTracker.Desktop.Data
 {

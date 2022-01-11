@@ -1,24 +1,22 @@
-﻿using Avalonia.Threading;
+﻿using ProjectTracker.Services.Abstractions;
 using System;
-using ProjectTracker.Desktop.Services.Interfaces;
-using System.Collections.Generic;
-using System.Text;
+using System.Timers;
 
 namespace ProjectTracker.Desktop.Services
 {
     public class TimerService : ITimerService
     {
-        public DispatcherTimer Timer { get; private set; }
+        public Timer Timer { get; private set; }
 
         public event EventHandler TimerTick;
-        public bool Enabled { get => Timer.IsEnabled; }
+        public bool Enabled { get => Timer.Enabled; }
         public TimerService()
         {
-            Timer = new DispatcherTimer
+            Timer = new Timer
             {
-                Interval = new TimeSpan(0, 0, 1)
+                Interval = 1000
             };
-            Timer.Tick += Timer_Tick;
+            Timer.Elapsed += Timer_Tick;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

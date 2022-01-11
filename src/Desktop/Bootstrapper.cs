@@ -1,14 +1,14 @@
 using Splat;
 using System;
 using ProjectTracker.Desktop.ViewModels;
-using ProjectTracker.Desktop.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ProjectTracker.Desktop.Util.Config;
 using Avalonia.Controls;
 using ProjectTracker.Desktop.Services;
-using ProjectTracker.Desktop.Services.Interfaces;
 using ProjectTracker.Desktop.Data;
+using ProjectTracker.Services.Abstractions;
+using ProjectTracker.Models;
 
 namespace Desktop
 {

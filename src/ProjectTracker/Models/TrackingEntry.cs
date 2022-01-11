@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectTracker.Desktop.Models
+namespace ProjectTracker.Models
 {
     public class TrackingEntry
     {

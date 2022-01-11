@@ -1,13 +1,9 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.FreeDesktop.DBusIme;
 using Desktop;
 using DynamicData;
-using DynamicData.Binding;
-using ProjectTracker.Desktop.Models;
-using ProjectTracker.Desktop.Services;
-using ProjectTracker.Desktop.Services.Interfaces;
 using ProjectTracker.Desktop.Views;
+using ProjectTracker.Models;
+using ProjectTracker.Services.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -17,9 +13,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ProjectTracker.Desktop.ViewModels
 {
@@ -51,7 +44,7 @@ namespace ProjectTracker.Desktop.ViewModels
         {
             TimeTableViewModel viewModel = Locator.Current.GetRequiredService<TimeTableViewModel>();
             viewModel.CurrentProject = project;
-            Window window = new Window()
+            Window window = new()
             {
                 Content = new TimeTable()
                 {
