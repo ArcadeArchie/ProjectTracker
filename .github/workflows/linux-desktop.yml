@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: add Gitlab feed
+      run: dotnet nuget add source "https://git.nstrassburger.de/api/v4/projects/21/packages/nuget/index.json" --name "Arcade GitLab"
     - name: Restore dependencies
       run: dotnet restore ./ProjectTracker.Desktop.sln
     - name: Build
