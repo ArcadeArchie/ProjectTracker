@@ -11,17 +11,21 @@ This Project is build using AvaloniaUI, .NET 5 and Xamarin.Forms, so for buildin
 * VS 2019 16.9 or higher
   * With Mobile, Cross Platfrom and Desktop Workloads installed
 * .NET SDK 5.0 or higher
+* Add the Gitlab NuGet feed (as its required for some packages of mine)
+```
+nuget source Add -Name "Arcade GitLab" -Source "https://git.nstrassburger.de/api/v4/projects/21/packages/nuget/index.json"
+```
 
 ## Guides
 - [Getting Started with .NET][dotnet-quickstart]
 - [Getting Started with Xamarin][xamarin-quickstart]
 - [Getting Started with AvaloniaUI][avaloniaui-quickstart]
-
+- [Install NuGet][install-nuget]
 
 [dotnet-quickstart]: https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/intro
 [xamarin-quickstart]: https://dotnet.microsoft.com/learn/xamarin/hello-world-tutorial/intro
 [avaloniaui-quickstart]: https://docs.avaloniaui.net/docs/getting-started
-
+[install-nuget]: https://www.nuget.org/downloads
 
 ## Folder structure
 ### src/Desktop
