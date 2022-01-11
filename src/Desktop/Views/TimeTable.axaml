@@ -27,7 +27,7 @@
         </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Styles>
-          <StyleInclude Source="avares://ProjectTracker/Styles/DataGrid.axaml"/>
+          <StyleInclude Source="/Styles/DataGrid.axaml"/>
         </DataGrid.Styles>
         <DataGrid.Columns>
           <DataGridTextColumn Binding="{Binding ProjectName}"/>
